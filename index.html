@@ -25,6 +25,12 @@
       transform: translate(-50%);
       background-color: blue;
     }
+    .bullet {
+      position: absolute;
+      width: 6px;
+      height: 10px;
+      background-color: red;
+    }
   </style>
 </head>
 <body>
@@ -53,10 +59,22 @@
       }
     }
 
+    const creatBullet = () => {
+      // zdefiniuj pocisk
+      const bullet = document.createElement('div');
+      bullet.className = 'bullet';
+      bullet.style.left = `${playerElement.offsetLeft}px`;
+      bullet.style.bottom = `${playerElement.offsetHeight}px`;
+
+      // dodaj na plansze
+      boardElement.appendChild(bullet);
+    }
+
     const handleKeyboard = (e) => {
       switch (e.code) {
         case 'ArrowLeft': movePlayer(-1); break;
-        case 'ArrowRight': movePlayer(1);
+        case 'ArrowRight': movePlayer(1); break;
+        case 'Space': creatBullet();
       }
     }
 
