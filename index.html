@@ -15,6 +15,7 @@
       border: 1px solid #000;
       margin: 0 auto;
       position: relative;
+      overflow: hidden;
     }
     #player {
       width: 80px;
@@ -115,16 +116,32 @@
       // zdefiniuj statek
       const enemy = document.createElement('div');
       enemy.className = 'enemy';
-      enemy.style.top = 0;
-      enemy.style.left = `${Math.floor(Math.random() * boardElement.offsetWidth - 60)}px`;
+      enemy.style.top = -40 + 'px';
+      enemy.style.left = `${Math.floor(Math.random() * (boardElement.offsetWidth - 60) + 60)}px`;
 
       // dodaj do mapy
       boardElement.append(enemy);
       enemies.push(enemy);
     }
 
+    const moveEnemies = () => {
+      for (let i = 0; i < enemies.length; i++) {
+        const enemy = enemies[i];
+        // przesuń statek w dół
+        enemy.style.top = `${enemy.offsetTop + 5}px`;
+
+        // gdy statek wyjedzie poza mapę
+        if (enemy.offsetTop >= boardElement.offsetHeight) {
+          enemies.splice(i, 1);
+          enemy.remove();
+          alert('Koniec gry!');
+        }
+      }
+    }
+
     // intervały
     setInterval(moveBullets, 500);
+    setInterval(moveEnemies, 500);
     setInterval(createEnemy, 1000);
   </script>
   
