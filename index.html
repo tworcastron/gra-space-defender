@@ -31,6 +31,12 @@
       height: 10px;
       background-color: red;
     }
+    .enemy {
+      width: 60px;
+      height: 40px;
+      position: absolute;
+      background-color: yellowgreen;
+    }
   </style>
 </head>
 <body>
@@ -42,6 +48,7 @@
   
   <script>
     const bullets = [];
+    const enemies = [];
 
     // pobranie elementów
     const playerElement = document.querySelector('#player');
@@ -98,10 +105,27 @@
           bullet.remove();
         }
       }
-    } 
+    }
+
+    const createEnemy = () => {
+      // tworz statki losowo (raz tak, raz nie)
+      const shouldCreate = Math.round(Math.random());
+      if (!shouldCreate) return;
+
+      // zdefiniuj statek
+      const enemy = document.createElement('div');
+      enemy.className = 'enemy';
+      enemy.style.top = 0;
+      enemy.style.left = `${Math.floor(Math.random() * boardElement.offsetWidth - 60)}px`;
+
+      // dodaj do mapy
+      boardElement.append(enemy);
+      enemies.push(enemy);
+    }
 
     // intervały
     setInterval(moveBullets, 500);
+    setInterval(createEnemy, 1000);
   </script>
   
 </body>
