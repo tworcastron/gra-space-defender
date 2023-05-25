@@ -51,6 +51,20 @@
       position: absolute;
       background: url('./img/explosion.png') no-repeat center / contain;
     }
+    .points {
+      z-index: 3;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: rgb(38, 206, 38);
+      height: 10px;
+    }
+    .points img {
+      width: 22px;
+      vertical-align: middle;
+    }
   </style>
 </head>
 <body>
@@ -58,15 +72,21 @@
 
   <div id="game-board">
     <div id="player"></div>
+    <div class="points">
+      <img src="./img/coin.png" />
+      <span id="score">0</span>
+    </div>
   </div>
   
   <script>
     const bullets = [];
     const enemies = [];
+    let score = 0;
 
     // pobranie elementów
     const playerElement = document.querySelector('#player');
     const boardElement = document.querySelector('#game-board');
+    const scoreElement = document.querySelector('#score');
 
     const movePlayer = (direction) => {
       // policz nową pozycje playera
@@ -110,6 +130,11 @@
         && (bullet.top < enemy.bottom);
     }
 
+    const addScore = (points = 0) => {
+      score += points;
+      scoreElement.innerHTML = score;
+    }
+
     const checkBulletCollision = (bullet) => {
       const position = bullet.getBoundingClientRect();
 
@@ -119,6 +144,9 @@
 
         // czy pocisk i statek znajdują się w tym samym miejscu
         if (checkCollision(position, enemyPostion)) {
+          // dodaj punkty
+          addScore(1);
+
           // usuń pocisk
           const idx = bullets.indexOf(bullet);
           bullets.splice(idx, 1);
