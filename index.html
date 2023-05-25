@@ -65,6 +65,19 @@
       width: 22px;
       vertical-align: middle;
     }
+    #lifes {
+      z-index: 3;
+      right: 20px;
+      top: 20px;
+      position: absolute;
+      display: flex;
+      gap: 10px;
+    }
+    .life {
+      width: 25px;
+      height: 25px;
+      background: url('./img/life.png') no-repeat center / contain;
+    }
   </style>
 </head>
 <body>
@@ -76,17 +89,20 @@
       <img src="./img/coin.png" />
       <span id="score">0</span>
     </div>
+    <div id="lifes"></div>
   </div>
   
   <script>
     const bullets = [];
     const enemies = [];
     let score = 0;
+    let lifes = 3;
 
     // pobranie elementów
     const playerElement = document.querySelector('#player');
     const boardElement = document.querySelector('#game-board');
     const scoreElement = document.querySelector('#score');
+    const lifesElemeent = document.querySelector('#lifes')
 
     const movePlayer = (direction) => {
       // policz nową pozycje playera
@@ -133,6 +149,15 @@
     const addScore = (points = 0) => {
       score += points;
       scoreElement.innerHTML = score;
+    }
+
+    const showLifes = () => {
+      const html = Array(lifes)
+        .fill(0)
+        .map(n => '<div class="life"></div>')
+        .join('');
+
+      lifesElemeent.innerHTML = html;
     }
 
     const checkBulletCollision = (bullet) => {
@@ -223,9 +248,18 @@
 
         // gdy statek wyjedzie poza mapę
         if (enemy.offsetTop >= boardElement.offsetHeight) {
+          // odejmij punkt życia
+          lifes--;
+          showLifes();
+
+          // usun wroga z mapy
           enemies.splice(i, 1);
           enemy.remove();
-          alert('Koniec gry!');
+
+          // koniec gry
+          if (lifes === 0) {
+            alert('Koniec gry!');
+          }
         }
       }
     }
@@ -234,6 +268,8 @@
     setInterval(moveBullets, 50);
     setInterval(moveEnemies, 200);
     setInterval(createEnemy, 1000);
+
+    showLifes();
   </script>
   
 </body>
