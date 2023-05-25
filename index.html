@@ -92,6 +92,35 @@
     // obsłużenie klawiatury
     window.addEventListener('keydown', handleKeyboard);
 
+    const checkCollision = (bullet, enemy) => {
+      return (bullet.left > enemy.left && bullet.right < enemy.right)
+        && (bullet.top < enemy.bottom);
+    }
+
+    const checkBulletCollision = (bullet) => {
+      const position = bullet.getBoundingClientRect();
+
+      for (let i = 0; i < enemies.length; i++) {
+        const enemy = enemies[i];
+        const enemyPostion = enemy.getBoundingClientRect();
+
+        // czy pocisk i statek znajdują się w tym samym miejscu
+        if (checkCollision(position, enemyPostion)) {
+          // usuń pocisk
+          const idx = bullets.indexOf(bullet);
+          bullets.splice(idx, 1);
+          bullet.remove();
+
+          // usuń trafiony statek
+          enemies.splice(i, 1);
+          enemy.remove();
+
+          break;
+        }
+      }
+
+    }
+
     const moveBullets = () => {
       for (let i = 0; i < bullets.length; i++) {
         const bullet = bullets[i];
@@ -104,6 +133,9 @@
           bullets.splice(i, 1);
           i--;
           bullet.remove();
+        } else {
+          // sprawdź czy coś trafił
+          checkBulletCollision(bullet);
         }
       }
     }
@@ -117,7 +149,7 @@
       const enemy = document.createElement('div');
       enemy.className = 'enemy';
       enemy.style.top = -40 + 'px';
-      enemy.style.left = `${Math.floor(Math.random() * (boardElement.offsetWidth - 60) + 60)}px`;
+      enemy.style.left = `${Math.floor(Math.random() * (boardElement.offsetWidth - 120) + 60)}px`;
 
       // dodaj do mapy
       boardElement.append(enemy);
