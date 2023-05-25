@@ -78,6 +78,18 @@
       height: 25px;
       background: url('./img/life.png') no-repeat center / contain;
     }
+    #game-end {
+      z-index: 4;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      padding: 30px 50px;
+      color: #fff;
+      width: 300px;
+      background-color: #2c2c48;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -90,6 +102,11 @@
       <span id="score">0</span>
     </div>
     <div id="lifes"></div>
+    <div id="game-end">
+      <h2>Koniec gry:(</h2>
+      Kosmiczne statki przedostały się na Ziemię...
+      <br><br>
+    </div>
   </div>
   
   <script>
@@ -102,7 +119,8 @@
     const playerElement = document.querySelector('#player');
     const boardElement = document.querySelector('#game-board');
     const scoreElement = document.querySelector('#score');
-    const lifesElemeent = document.querySelector('#lifes')
+    const lifesElemeent = document.querySelector('#lifes');
+    const endGameElement = document.querySelector('#game-end');
 
     const movePlayer = (direction) => {
       // policz nową pozycje playera
@@ -258,16 +276,26 @@
 
           // koniec gry
           if (lifes === 0) {
-            alert('Koniec gry!');
+            gameOver();
           }
         }
       }
     }
 
     // intervały
+    let moveEnemiesInterval
+    let createEnemiesInterval
+
+    const gameOver = () => {
+      endGameElement.style.display = 'block';
+      clearInterval(moveEnemiesInterval);
+      clearInterval(createEnemiesInterval);
+      boardElement.style.animation = 'none';
+    }
+
     setInterval(moveBullets, 50);
-    setInterval(moveEnemies, 200);
-    setInterval(createEnemy, 1000);
+    moveEnemiesInterval = setInterval(moveEnemies, 200);
+    createEnemiesInterval = setInterval(createEnemy, 1000);
 
     showLifes();
   </script>
