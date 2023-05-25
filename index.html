@@ -90,6 +90,15 @@
       transform: translate(-50%, -50%);
       display: none;
     }
+    .button {
+      color: #fff;
+      background: #494975;
+      border: 3px dashed #58589f;
+      display: block;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -106,6 +115,7 @@
       <h2>Koniec gry:(</h2>
       Kosmiczne statki przedostały się na Ziemię...
       <br><br>
+      <button id="start-again" class="button">Zacznij od nowa</button>
     </div>
   </div>
   
@@ -121,6 +131,7 @@
     const scoreElement = document.querySelector('#score');
     const lifesElemeent = document.querySelector('#lifes');
     const endGameElement = document.querySelector('#game-end');
+    const startAgainButton = document.querySelector('#start-again');
 
     const movePlayer = (direction) => {
       // policz nową pozycje playera
@@ -282,6 +293,10 @@
       }
     }
 
+    const startAgain = () => {
+      window.location.reload();
+    }
+    
     // intervały
     let moveEnemiesInterval
     let createEnemiesInterval
@@ -298,6 +313,8 @@
     createEnemiesInterval = setInterval(createEnemy, 1000);
 
     showLifes();
+
+    startAgainButton.addEventListener('click', startAgain);
   </script>
   
 </body>
