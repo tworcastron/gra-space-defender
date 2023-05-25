@@ -39,10 +39,17 @@
       background: url('./img/shot.png') no-repeat center / contain;
     }
     .enemy {
+      z-index: 2;
       width: 60px;
       height: 40px;
       position: absolute;
       background: url('./img/alien.png') no-repeat center / contain;
+    }
+    .explosion {
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      background: url('./img/explosion.png') no-repeat center / contain;
     }
   </style>
 </head>
@@ -117,6 +124,9 @@
           bullets.splice(idx, 1);
           bullet.remove();
 
+          // dodaj wybuch
+          makeExplosion(enemy.offsetLeft, enemy.offsetTop);
+
           // usuń trafiony statek
           enemies.splice(i, 1);
           enemy.remove();
@@ -124,7 +134,22 @@
           break;
         }
       }
+    }
 
+    const makeExplosion = (left, top) => {
+      // zdefiniuj wybuch
+      const explosion = document.createElement('div');
+      explosion.className = 'explosion';
+      explosion.style.left = `${left}px`;
+      explosion.style.top = `${top}px`;
+
+      // dodaj wybuch na mapie
+      boardElement.appendChild(explosion);
+
+      // usun wybuch po 2 sek
+      setTimeout(() => {
+        explosion.remove();
+      }, 2000);
     }
 
     const moveBullets = () => {
