@@ -146,7 +146,7 @@
     const startButton = document.querySelector('#start');
     const newGameElement = document.querySelector('#game-start');
 
-    const movePlayer = (direction) => {
+    const movePlayerX = (direction) => {
       // policz nową pozycje playera
       const newPosition = playerElement.offsetLeft + direction * 10;
       // pobierz pozycję planszy
@@ -159,13 +159,24 @@
         playerElement.style.left = `${newPosition}px`;
       }
     }
+    const movePlayerY = (direction) => {
+      // policz nową pozycje playera
+      const newPosition = playerElement.offsetTop + direction * 10;
+      const minTop = 0;
+      const maxTop = boardElement.offsetHeight - playerElement.offsetHeight;
+
+      // przesuń playera jeśli mieści się w planszy
+      if (newPosition >= minTop && newPosition < maxTop) {
+        playerElement.style.top = `${newPosition}px`;
+      }
+    }
 
     const creatBullet = () => {
       // zdefiniuj pocisk
       const bullet = document.createElement('div');
       bullet.className = 'bullet';
       bullet.style.left = `${playerElement.offsetLeft}px`;
-      bullet.style.bottom = `${playerElement.offsetHeight}px`;
+      bullet.style.top = `${playerElement.offsetTop}px`;
 
       // dodaj na plansze
       boardElement.appendChild(bullet);
@@ -174,8 +185,10 @@
 
     const handleKeyboard = (e) => {
       switch (e.code) {
-        case 'ArrowLeft': movePlayer(-1); break;
-        case 'ArrowRight': movePlayer(1); break;
+        case 'ArrowLeft': movePlayerX(-1); break;
+        case 'ArrowRight': movePlayerX(1); break;
+        case 'ArrowUp': movePlayerY(-1); break;
+        case 'ArrowDown': movePlayerY(1); break;
         case 'Space': creatBullet();
       }
     }
