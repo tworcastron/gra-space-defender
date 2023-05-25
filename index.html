@@ -16,6 +16,12 @@
       margin: 0 auto;
       position: relative;
       overflow: hidden;
+      background: url('./img/bg.jpg') repeat;
+      animation: moveBg 1.5s infinite linear;
+    }
+    @keyframes moveBg {
+      from { background-position: 0 0; }
+      to { background-position: 0 130%; }
     }
     #player {
       width: 80px;
@@ -24,19 +30,19 @@
       bottom: 0;
       left: 50%;
       transform: translate(-50%);
-      background-color: blue;
+      background: url('./img/player.png') no-repeat center / contain;
     }
     .bullet {
       position: absolute;
       width: 6px;
       height: 10px;
-      background-color: red;
+      background: url('./img/shot.png') no-repeat center / contain;
     }
     .enemy {
       width: 60px;
       height: 40px;
       position: absolute;
-      background-color: yellowgreen;
+      background: url('./img/alien.png') no-repeat center / contain;
     }
   </style>
 </head>
@@ -172,8 +178,8 @@
     }
 
     // intervały
-    setInterval(moveBullets, 500);
-    setInterval(moveEnemies, 500);
+    setInterval(moveBullets, 50);
+    setInterval(moveEnemies, 200);
     setInterval(createEnemy, 1000);
   </script>
   
