@@ -1,17 +1,20 @@
+import elements from './elements.js';
+
+const {
+  playerElement,
+  boardElement,
+  scoreElement,
+  lifesElemeent,
+  endGameElement,
+  startAgainButton,
+  startButton,
+  newGameElement,
+} = elements;
+
 const bullets = [];
 const enemies = [];
 let score = 0;
 let lifes = 3;
-
-// pobranie elementów
-const playerElement = document.querySelector('#player');
-const boardElement = document.querySelector('#game-board');
-const scoreElement = document.querySelector('#score');
-const lifesElemeent = document.querySelector('#lifes');
-const endGameElement = document.querySelector('#game-end');
-const startAgainButton = document.querySelector('#start-again');
-const startButton = document.querySelector('#start');
-const newGameElement = document.querySelector('#game-start');
 
 const movePlayerX = (direction) => {
   // policz nową pozycje playera
@@ -218,4 +221,4 @@ const startGame = () => {
 
 
 startAgainButton.addEventListener('click', startAgain);
-start.addEventListener('click', startGame);
+startButton.addEventListener('click', startGame);
