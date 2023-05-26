@@ -1,4 +1,5 @@
 import elements from './elements.js';
+import Player from './player.js';
 
 const {
   playerElement,
@@ -13,33 +14,11 @@ const {
 
 const bullets = [];
 const enemies = [];
-let score = 0;
-let lifes = 3;
 
-const movePlayerX = (direction) => {
-  // policz nową pozycje playera
-  const newPosition = playerElement.offsetLeft + direction * 10;
-  // pobierz pozycję planszy
-  const { left, right } = boardElement.getBoundingClientRect();
-  const minLeft = playerElement.offsetWidth / 2;
-  const maxRight = right - left - minLeft;
-
-  // przesuń playera jeśli mieści się w planszy
-  if (newPosition >= minLeft && newPosition < maxRight) {
-    playerElement.style.left = `${newPosition}px`;
-  }
-}
-const movePlayerY = (direction) => {
-  // policz nową pozycje playera
-  const newPosition = playerElement.offsetTop + direction * 10;
-  const minTop = 0;
-  const maxTop = boardElement.offsetHeight - playerElement.offsetHeight;
-
-  // przesuń playera jeśli mieści się w planszy
-  if (newPosition >= minTop && newPosition < maxTop) {
-    playerElement.style.top = `${newPosition}px`;
-  }
-}
+const player = new Player({
+  element: playerElement,
+  boardElement: boardElement,
+});
 
 const creatBullet = () => {
   // zdefiniuj pocisk
@@ -55,10 +34,10 @@ const creatBullet = () => {
 
 const handleKeyboard = (e) => {
   switch (e.code) {
-    case 'ArrowLeft': movePlayerX(-1); break;
-    case 'ArrowRight': movePlayerX(1); break;
-    case 'ArrowUp': movePlayerY(-1); break;
-    case 'ArrowDown': movePlayerY(1); break;
+    case 'ArrowLeft': player.moveX(-1); break;
+    case 'ArrowRight': player.moveX(1); break;
+    case 'ArrowUp': player.moveY(-1); break;
+    case 'ArrowDown': player.moveY(1); break;
     case 'Space': creatBullet();
   }
 }
@@ -72,12 +51,12 @@ const checkCollision = (bullet, enemy) => {
 }
 
 const addScore = (points = 0) => {
-  score += points;
-  scoreElement.innerHTML = score;
+  player.addScore(points);
+  scoreElement.innerHTML = player.getScore();
 }
 
 const showLifes = () => {
-  const html = Array(lifes)
+  const html = Array(player.getLifes())
     .fill(0)
     .map(n => '<div class="life"></div>')
     .join('');
@@ -174,7 +153,7 @@ const moveEnemies = () => {
     // gdy statek wyjedzie poza mapę
     if (enemy.offsetTop >= boardElement.offsetHeight) {
       // odejmij punkt życia
-      lifes--;
+      player.setLifes(player.getLifes() - 1);
       showLifes();
 
       // usun wroga z mapy
@@ -182,7 +161,7 @@ const moveEnemies = () => {
       enemy.remove();
 
       // koniec gry
-      if (lifes === 0) {
+      if (player.getLifes() === 0) {
         gameOver();
       }
     }
